@@ -1,5 +1,6 @@
 import scrapy
 import json
+from ast import literal_eval
 
 class LinkedInPeopleProfileSpider(scrapy.Spider):
     name = "linkedin_people_profile"
@@ -148,10 +149,10 @@ class LinkedCompanySpider(scrapy.Spider):
     name = "linkedin_company_profile"
 
     #add your own list of company urls here
-    company_pages = [
-        'https://www.linkedin.com/company/usebraintrust',
-        'https://www.linkedin.com/company/codelightco',
-        ]
+    json_file = open('company_url.json')
+    data = json.load(json_file)
+    
+    company_pages = literal_eval(data)
 
 
     def start_requests(self):
@@ -202,4 +203,3 @@ class LinkedCompanySpider(scrapy.Spider):
 
             yield scrapy.Request(url=next_url, callback=self.parse_response, meta={'company_index_tracker': company_index_tracker})
     
-
